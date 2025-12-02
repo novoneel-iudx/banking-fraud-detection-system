@@ -1,59 +1,57 @@
-# Data Conduits DA204o Course Project
+# Nigerian Banking Fraud Detection System
+### Team 17 — DA204o: Data Science in Practice
 
-## Nigerian Banking Fraud Detection System
+## Team Members
+- **Swarup E** — swarupe@iisc.ac.in — 13-19-02-19-52-25-1-26456
+- **Novoneel C** — cnovoneel@iisc.ac.in — 13-19-02-19-52-25-1-26197
+- **Sarthak S** — sarthak1@iisc.ac.in — 13-19-02-19-52-25-1-26177
+- **Rakshit R** — rrakshit@iisc.ac.in — 13-19-02-19-52-25-1-26334
 
-Fraud detection system for Nigerian banking transactions using ML ensemble + LSTM.
+## Problem Statement
+This project develops a machine-learning–based fraud detection system for Nigerian banking transactions using the Nigeria Inter-Bank Settlement System (NIBSS) dataset. The system combines LSTM-derived temporal sequence features with gradient boosting models (LightGBM, XGBoost, CatBoost), further optimized using Optuna. The goal is to achieve high detection accuracy while maintaining extremely low false positive rates to ensure smooth customer experience and regulatory compliance.
 
-## Quick Start
+## Dataset Description
+The project uses the NIBSS Fraud Dataset (Kaggle) — a synthetic dataset designed to realistically reflect Nigerian banking transaction patterns while preserving data privacy. It contains 1 million transaction records with a blend of numeric, categorical, and temporal attributes stored in CSV format.
 
-```bash
-# Install dependencies
-pip install -r requirements.txt
+Each transaction includes details such as:
+- Transaction amount, type, and channel
+- Available balance and merchant category
+- Device and location information
+- Customer demographics and account age
+- Transaction frequency and behavioral patterns
+- Historical fraud indicators and social engineering signals
+- Ground-truth target label: “Is Fraud”
 
-# Run the demo
-streamlit run demo_app.py
-```
+## High-Level Approach & Methods
+The project follows an end-to-end fraud detection workflow:
 
-## Results
+1. **Exploratory Data Analysis (EDA):**
+Understanding transaction patterns, temporal trends, and severe class imbalance.
 
-- F1 Score: 0.8847 
-- AUC-ROC: 0.9638 
-- False Positive Rate: 0.001%
+2. **Feature Engineering:**
+- Transformative features (categorical encodings, amount scaling, deviations)
+- Temporal and velocity-based features
+- Interaction and risk-composite features
+- **LSTM-generated sequence embeddings** to model user transaction patterns
 
-## Project Structure
+3. **Modeling:**
+Training LightGBM, XGBoost, and CatBoost models to learn non-linear fraud patterns.
 
-```
-completed/
-├── notebooks/           # All analysis notebooks
-├── data/                # Processed data
-├── demo_app.py          # Streamlit demo
-```
+4. **Ensembling:**
+Combining models to leverage complementary strengths and reduce variance.
 
-## Notebooks
+5. **Handling Imbalance:**
+Using weighted losses, scale_pos_weight, and threshold tuning to improve recall while maintaining extremely low false positives.
 
-Run in order:
-1. `01_data_preparation_and_eda.ipynb` - Load data, feature engineering, EDA
-2. `02a_baseline_models.ipynb` - Train LightGBM, CatBoost, XGBoost
-3. `03_ensemble_and_evaluation.ipynb` - Optuna ensemble optimization
-4. `04_model_interpretability.ipynb` - SHAP analysis
-5. `05_lstm_sequence_features.ipynb` - Train LSTM for embeddings
-6. `06_models_with_lstm.ipynb` - Models with LSTM features
-7. `07_lstm_ensemble_comparison.ipynb` - Final comparison
+6. **Optimization:**
+**Optuna** is used for hyperparameter tuning and learning optimal ensemble voting weights.
 
-## Data
+## Summary of Results
+The final ensemble model delivers strong performance across all key metrics:
 
-Using NIBSS Fraud Dataset from Kaggle (1M transactions, 0.3% fraud rate).
+- **AUC-ROC:** 0.96+
+- **F1-Score:** 0.8847 (98% of the project target)
+- **False Positive Rate:** 0.001%
+- **Precision:** Extremely high, ensuring minimal customer disruption
 
-## Models
-
-- LightGBM, CatBoost, XGBoost with class weights
-- LSTM for sequence embeddings (64-dim)
-- Optuna-optimized weighted ensemble
-
-## Key Features
-
-61 engineered features including:
-- Velocity (tx_count_24h, amount_sum_24h)
-- Behavioral (amount_vs_mean_ratio, velocity_score)
-- Temporal (hour, day, time gaps)
-- Categorical (channel, location, merchant)
+Incorporating **LSTM-based temporal embeddings** provides a modest improvement (~1%), while most predictive power comes from engineered behavioral, temporal, and interaction features. Overall, the system reliably detects high-risk transactions at scale and significantly outperforms traditional rule-based approaches, demonstrating strong applicability to Nigerian banking fraud detection.
