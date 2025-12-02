@@ -1,4 +1,6 @@
-# Nigerian Banking Fraud Detection
+# Data Conduits DA204o Course Project
+
+## Nigerian Banking Fraud Detection
 
 Fraud detection system for Nigerian banking transactions using ML ensemble + LSTM.
 
